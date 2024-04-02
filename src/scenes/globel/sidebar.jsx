@@ -1,0 +1,289 @@
+import { useState, useEffect } from "react";
+import { ProSidebar, Menu, MenuItem } from "react-pro-sidebar";
+import { Box, IconButton, Typography, useTheme } from '@mui/material';
+import { Link } from "react-router-dom";
+import "react-pro-sidebar/dist/css/styles.css";
+import { tokens } from "../../theme";
+
+
+
+import MapsHomeWorkOutlinedIcon from '@mui/icons-material/MapsHomeWorkOutlined';
+import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
+import PeopleAltOutlinedIcon from '@mui/icons-material/PeopleAltOutlined';
+import MenuOutlinedIcon from '@mui/icons-material/MenuOutlined';
+import ProductionQuantityLimitsOutlinedIcon from '@mui/icons-material/ProductionQuantityLimitsOutlined';
+import NoteAltOutlinedIcon from '@mui/icons-material/NoteAltOutlined';
+import DnsOutlinedIcon from '@mui/icons-material/DnsOutlined';
+import DomainOutlinedIcon from '@mui/icons-material/DomainOutlined';
+import ContactPageOutlinedIcon from '@mui/icons-material/ContactPageOutlined';
+import PercentOutlinedIcon from '@mui/icons-material/PercentOutlined';
+import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
+import SendTimeExtensionOutlinedIcon from '@mui/icons-material/SendTimeExtensionOutlined';
+import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
+
+
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import Topbar from "../../scenes/globel/Topbar";
+
+const Item = ({ tittle, to, icon, selected, setSelected }) => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  return (
+
+    <MenuItem active={selected === tittle} style={{ color: colors.grey[100] }} onClick={() => setSelected(tittle)} icon={icon} >
+      <Typography variant="h5" >{tittle}</Typography>
+      <Link to={to} />
+    </MenuItem>
+  )
+}
+
+const Sidebar = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [selected, setSelected] = useState("Dashboard");
+
+  const [user, setUser] = useState([]);
+
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (user) {
+      setUser(user);
+    }
+  }, []);
+
+  return (
+    <>
+
+      <Box
+        sx={{
+          "& .pro-sidebar-inner": {
+            background: `${colors.primary[400]} !important`
+          },
+          "& .pro-icon-wrapper": {
+            backgroundColor: "transparent !important"
+          },
+          "& .pro-inner-item": {
+            padding: "0px 35px 5px 20px !important"
+          },
+          "& .pro-inner-item:hover": {
+            color: "#708090 !important"
+          },
+          "& .pro-menu-item.active": {
+            color: "#6495ED !important"
+          },
+
+        }}
+      >
+        <ProSidebar collapsed={isCollapsed}>
+          <Menu iconShape="square">
+            {/* LOGO AND MENU ICON */}
+            <MenuItem
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              icon={isCollapsed ? <MenuOutlinedIcon /> : undefined}
+              style={{
+                margin: "10px 0 20px 0",
+                color: colors.grey[100],
+              }}
+            >
+              {!isCollapsed && (
+                <Box
+                  display="flex"
+                  justifyContent="space-between"
+                  alignItems="center"
+                  ml="15px"
+                >
+                  <Typography variant="h7" color={colors.grey[100]} >
+                    RK ADMINISTRATOR &nbsp;
+                  </Typography>
+                  <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
+                    <MenuOutlinedIcon />
+                  </IconButton>
+                </Box>
+              )}
+            </MenuItem>
+
+            {!isCollapsed && (
+              <Box mb="35px">
+                <Box display="flex" justifyContent="center" alignItems="center">
+                  <img
+                    alt="profile-user"
+                    width="115px"
+                    height="105px"
+                    src={`../../assets/user.jpg`}
+                    style={{ cursor: "pointer", borderRadius: "50%" }}
+                  />
+                </Box>
+
+                <Box textAlign="center">
+                  <Typography
+                    variant="h3"
+                    color={colors.grey[100]}
+                    fontWeight="bold"
+                    sx={{ m: "10px 0 0 0" }}
+                  >
+                    {`${user.firstName} ${user.lastName}`}
+                  </Typography>
+                  <Typography variant="h6" color={colors.greenAccent[500]}>
+                  {user.email} - Admin
+                  </Typography>
+                </Box>
+              </Box>
+
+
+            )}
+
+            {/* <NavSection navConfig={sidebarConfig} /> */}
+
+            <Box paddingLeft={isCollapsed ? undefined : "10%"}>
+              <Item
+                tittle="Dashboard"
+                to="/dashboard"
+                icon={<MapsHomeWorkOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+
+              ></Item>
+              <Typography
+                variant="h6"
+                color={colors.grey[300]}
+                sx={{ m: "15px 0 5px 20px" }}>
+
+                RK Yard </Typography>
+
+                <Item
+                tittle="Order"
+                to="/dashboard/order"
+                icon={<NoteAltOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+
+              ></Item>
+              <Item
+                tittle="Product"
+                to="/dashboard/products"
+                icon={<ProductionQuantityLimitsOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+
+              ></Item>
+              <Item
+                tittle="Customer "
+                to="/dashboard/customer"
+                icon={<PeopleAltOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+
+              ></Item>
+             
+                     <Item
+                tittle="Delivery Partner"
+                to="/dashboard/delivery"
+                icon={<SendTimeExtensionOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+
+              ></Item>
+              <Typography
+                variant="h6"
+                color={colors.grey[300]}
+                sx={{ m: "15px 0 5px 20px" }}>
+
+                RK Construction </Typography>
+
+                <Item
+                tittle="Appointment"
+                to="/dashboard/appointment"
+                icon={<LocalLibraryOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+
+              ></Item>
+
+              <Item
+                tittle="Projects"
+                to="/dashboard/project"
+                icon={<DnsOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+
+              ></Item>
+              <Item
+                tittle="Material"
+                to="/dashboard/material"
+                icon={<DomainOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+
+              ></Item>
+              <Item
+                tittle="Account"
+                to="/dashboard/account"
+                icon={<PercentOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+
+              ></Item>
+              <Item
+                tittle="Employee"
+                to="/dashboard/employee"
+                icon={<ContactPageOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+
+              ></Item>
+
+
+
+              <Typography
+                variant="h6"
+                color={colors.grey[300]}
+                sx={{ m: "15px 0 5px 20px" }}>
+
+                Manage Team </Typography>
+
+              <Item
+                tittle="User"
+                to="/dashboard/user"
+                icon={<PermIdentityOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+
+              ></Item>
+              <Item
+                tittle="Role"
+                to="/dashboard/role"
+                icon={<AssignmentIndOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+
+              ></Item>
+              {/* <Typography
+              variant="h6"
+              color={colors.grey[300]}
+              sx={{ m: "15px 0 5px 20px" }}>
+
+              Data </Typography>
+
+
+            <Item
+              tittle="Form"
+              to="/form"
+              icon={<PeopleAltOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+
+            ></Item> */}
+
+            </Box>
+          </Menu>
+        </ProSidebar>
+      </Box>
+
+
+    </>
+
+  );
+};
+
+export default Sidebar;
